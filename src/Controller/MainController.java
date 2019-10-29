@@ -2,10 +2,7 @@ package Controller;
 
 import Commons.FuncValidation;
 import Data.FuncWriteFileCSV;
-import Model.House;
-import Model.Room;
-import Model.Services;
-import Model.Villa;
+import Model.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.UUID;
@@ -24,6 +21,10 @@ public class MainController {
             case 2:
                 showServices();
             case 3:
+                AddNewCustomer();
+            case 4:
+                ShowInformationCustomer();
+            case 5:
                System.exit(0);
             default:
                 System.out.println("Erro.back to menu");
@@ -31,6 +32,31 @@ public class MainController {
                 backMainMenu();
         }
     }
+    private static void AddNewCustomer(){
+        Services customer = new Customer();
+        System.out.println("nhập vào id");
+        customer.setId(UUID.randomUUID().toString().replace("--","---"));
+        System.out.println("nhập vào tên");
+        ((Customer)customer).setNameCustomer(sc.nextLine());
+        System.out.println("nhập vào ngày sinh ");
+        ((Customer)customer).setDateofbirth(sc.nextInt());
+        System.out.println("nhập vào giới tính");
+        ((Customer)customer).setGender(sc.nextLine());
+        System.out.println("nhập vào số CMNN");
+        ((Customer)customer).setCMND(sc.nextLine());
+        System.out.println("nhập vào số điện thoại");
+        ((Customer)customer).setTelephonenumber(sc.nextLine());
+        System.out.println("nhập vào đia chỉ email");
+        ((Customer)customer).setEmail(sc.nextLine());
+        System.out.println("nhập vào loại khách");
+        ((Customer)customer).setGuesttype(sc.nextLine());
+        customer.showInfor();
+
+
+
+
+    }
+    private static void ShowInformationCustomer(){}
     private static void backMainMenu(){
         System.out.println("\n enter to continue");
         System.out.println("\n------------------");
@@ -98,7 +124,7 @@ public class MainController {
         ArrayList<Villa> listVilla = FuncWriteFileCSV.getVillaFromCSV();
         for (Villa villa:listVilla){
             System.out.println("________________________");
-            villa.showInfor();
+            System.out.println(villa.showInfor());
             System.out.println("________________________");
         }
     }
@@ -106,7 +132,7 @@ public class MainController {
         ArrayList<House> listHouse = FuncWriteFileCSV.getHouseFromCSV();
         for (House house:listHouse){
             System.out.println("__________________________");
-            house.showInfor();
+            System.out.println(house.showInfor());
             System.out.println("_____________________");
         }
     }
@@ -114,16 +140,15 @@ public class MainController {
         ArrayList<Room> listRoom = FuncWriteFileCSV.getRoomFromCSV();
         for (Room room:listRoom){
             System.out.println("_______________");
-            room.showInfor();
+            System.out.println(room.showInfor());
             System.out.println("_________________");
         }
     }
     private static Services addnewServices(Services service){
         String content = "";
         String errMes = "";
-//        System.out.println("nhập vào id");
-//        service.setId(UUID.randomUUID().toString().replace("--","---"));
-//        sc.nextLine();
+        System.out.println("nhập vào id");service.setId(UUID.randomUUID().toString().replace("--","---"));
+        sc.nextLine();
         System.out.println("nhập tên dich vụ");
         service.setNameServices(sc.nextLine());
         while (FuncValidation.checkNameServices(service.getNameServices()));
@@ -138,9 +163,9 @@ public class MainController {
             System.out.println(errMes);
             service.setAreaused(FuncValidation.checkValiNumberFloat(content,errMes));
         }
-//        System.out.println("diện tích sử dụng");
-//        service.setAreaused(sc.nextFloat());
-//        sc.nextLine();
+        System.out.println("diện tích sử dụng");
+        service.setAreaused(sc.nextFloat());
+        sc.nextLine();
         content = " Enter Area Used";
         errMes = "Area Used is Invali(Area >30,Area must be a float),please try again";
         service.setAreaused(FuncValidation.checkValiNumberFloat(content,errMes));
@@ -148,51 +173,59 @@ public class MainController {
             System.out.println(errMes);
             service.setAreaused(FuncValidation.checkValiNumberFloat(content,errMes));
         }
-//        System.out.println("nhập chi phí thuê");
-//        service.setRentalcosts(sc.nextFloat());
-//        sc.nextLine();
+        System.out.println("nhập chi phí thuê");
+        service.setRentalcosts(sc.nextFloat());
+        sc.nextLine();
         content = " Enter Area Used";
         errMes = "Area Used is Invali(Area >30,Area must be a float),please try again";
         service.setAreaused(FuncValidation.checkValiNumberInteger(content,errMes));
         while (service.getAreaused()>0||service.getAreaused()<20){
             System.out.println(errMes);
             service.setAreaused(FuncValidation.checkValiNumberFloat(content,errMes));
+
+        System.out.println("nhập tên dich vụ");
+        service.setNameServices(sc.nextLine());
+        while (FuncValidation.checkNameServices(service.getNameServices()));
+        System.out.println("Name Servies is invalidate.please try again!!! ");
+        System.out.println("Enter Name Services:");
+        service.setNameServices(sc.nextLine());
+
+
         }
 //        System.out.println("nhập số người thuê");
 //        service.setAmountofpeople(sc.nextInt());
+
         System.out.println("nhập vào kiểu thuê");
         service.setTypeofrent(sc.nextLine());
-//        while (FuncValidation.checkNameServices(service.getNameServices()));
-//        System.out.println("Name Servies is invalidate.please try again!!! ");
-//        System.out.println("Enter Name Services:");
-//        service.setNameServices(sc.nextLine());
-//        sc.nextLine();
+        while (FuncValidation.checkNameServices(service.getNameServices()));
+        System.out.println("Name Servies is invalidate.please try again!!! ");
+        System.out.println("Enter Name Services:");
+        service.setNameServices(sc.nextLine());
+        sc.nextLine();
         return service;
     }
     private static void addnewVilla(){
         String content = "";
         String errMes = "";
        Services villa = new Villa();
-//        sc.nextLine();
-//        addnewServices(villa);
-//        System.out.println("nhập vào tiêu chuẩn phòng");
-//        ((Villa)villa).setRoomstandard(sc.nextLine());
-//
-//        System.out.println("nhập mô tả tiện nghi");
-//        ((Villa)villa).setComfortdescription(sc.nextLine());
-//        System.out.println("nhập sô tầng");
-//        ((Villa)villa).setNumberoffloors(sc.nextInt());
-//        System.out.println("nhập diện tích hồ bơi");
-//        ((Villa)villa).setPoolarea(sc.nextFloat());
-//        System.out.println(villa.showInfor());
-//        ArrayList<Villa> listVilla = new ArrayList<Villa>();
-//        listVilla.add((Villa)villa);
-//        FuncWriteFileCSV.writeVillaToFileCSV(listVilla);
-//        System.out.println("\n Add villa: "+villa.getNameServices()+"Successfully!!!");
-//        sc.nextLine();
-//        backMainMenu();
-        content = "Enter Area Pool";
-        errMes = "Area Pool is invalid(Area>30, Area must be a float).Please try again!!!";
+        sc.nextLine();
+        addnewServices(villa);
+        System.out.println("nhập vào tiêu chuẩn phòng");
+        ((Villa)villa).setRoomstandard(sc.nextLine());
+
+        System.out.println("nhập mô tả tiện nghi");
+        ((Villa)villa).setComfortdescription(sc.nextLine());
+        System.out.println("nhập sô tầng");
+        ((Villa)villa).setNumberoffloors(sc.nextInt());
+        System.out.println("nhập diện tích hồ bơi");
+        ((Villa)villa).setPoolarea(sc.nextFloat());
+        System.out.println(villa.showInfor());
+        ArrayList<Villa> listVilla = new ArrayList<Villa>();
+        listVilla.add((Villa)villa);
+        FuncWriteFileCSV.writeVillaToFileCSV(listVilla);
+        System.out.println("\n Add villa: "+villa.getNameServices()+"Successfully!!!");
+        sc.nextLine();
+        backMainMenu();
 
 
 

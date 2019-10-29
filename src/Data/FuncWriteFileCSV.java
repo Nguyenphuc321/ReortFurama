@@ -1,6 +1,7 @@
 package Data;
 
 
+import Model.Customer;
 import Model.House;
 import Model.Room;
 import Model.Villa;
@@ -21,11 +22,13 @@ public class FuncWriteFileCSV {
     private static final String pathVilla = "src/Data/Villa.csv";
     private static final String pathHouse = "src/Data/House.csv";
     private static final String pathRoom = "src/Data/Room.csv";
+    private static final String pathCustomer = "src/Data/Customer.csv";
     private static String[] headerRecordVilla = new String[]{"NameServices", " Areaused", " rentalcosts", "amountofpeople", "typeofrent", "id", "Roomstandard", "Comfortdescription",
             " Numberoffloors", "Poolarea"};
     private static String[] headerRecordHouse = new String[]{"NameServices", " Areaused", " rentalcosts", "amountofpeople", "typeofrent", "id", "Roomstandard", "Comfortdescription",
             " Numberoffloors"};
     private static String[] headerRecordRoom = new String[]{"NameServices", " Areaused", " rentalcosts", "amountofpeople", "typeofrent", "id", "Freeserviceincluded"};
+    private static String[] headerRecorCustomer = new String[]{"NameCustomer","Dateofbirth","gender","CMND","telephonenumber","addreess","Email","guesttype"};
     private static final int NUM_OF_LINE_SKIP = 1;
 
     public static void writeVillaToFileCSV(ArrayList<Villa> arrayList) {
@@ -90,6 +93,27 @@ public class FuncWriteFileCSV {
                         String.valueOf(room.getTypeofrent()),
                         room.getId(),
                         room.getFreeserviceincluded()
+                });
+            }
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+    public static void writeCustomerToFileCSV(ArrayList<Customer> arrayList) {
+        try (Writer writer = new FileWriter(pathCustomer);
+             CSVWriter csvWriter = new CSVWriter(writer, CSVWriter.DEFAULT_SEPARATOR
+                     , CSVWriter.NO_QUOTE_CHARACTER
+                     , CSVWriter.NO_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END)) {
+            csvWriter.writeNext(headerRecorCustomer);
+            for (Customer customer : arrayList) {
+                csvWriter.writeNext(new String[]{customer.getNameCustomer(),
+                        String.valueOf(customer.getDateofbirth()),
+                        customer.getGender(),
+                        customer.getCMND(),
+                        customer.getTelephonenumber(),
+                        customer.getAddress(),
+                        customer.getEmail(),
+                        customer.getGuesttype()
                 });
             }
         } catch (IOException ex) {
