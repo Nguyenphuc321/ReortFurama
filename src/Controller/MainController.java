@@ -3,8 +3,12 @@ package Controller;
 import Commons.FuncValidation;
 import Data.FuncWriteFileCSV;
 import Model.*;
+import com.sun.media.sound.SoftReceiver;
+
+import javax.naming.Name;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.SortedMap;
 import java.util.UUID;
 
 public class MainController {
@@ -13,18 +17,29 @@ public class MainController {
         sc = new Scanner(System.in);
         System.out.println("\n1.Add NewServices" +
                 "\n2. Show Services" +
-                "\n3.Exit" +
+                "\n3 AddNewCustomer()" +
+                "\n4AddNewBookingResort"+
+                "\n5 ShowInformationCustomer()"+
+                "\n6.Exit" +
                 "\n Please select one function below: ");
         switch (sc.nextInt()){
             case 1:
                 addNewServices();
+                break;
             case 2:
                 showServices();
+                break;
             case 3:
                 AddNewCustomer();
+                break;
             case 4:
                 ShowInformationCustomer();
+                backMainMenu();
+                break;
             case 5:
+                AddNewBookingResort();
+               break;
+            case 6:
                System.exit(0);
             default:
                 System.out.println("Erro.back to menu");
@@ -32,31 +47,77 @@ public class MainController {
                 backMainMenu();
         }
     }
-    private static void AddNewCustomer(){
-        Services customer = new Customer();
-        System.out.println("nhập vào id");
-        customer.setId(UUID.randomUUID().toString().replace("--","---"));
-        System.out.println("nhập vào tên");
-        ((Customer)customer).setNameCustomer(sc.nextLine());
-        System.out.println("nhập vào ngày sinh ");
-        ((Customer)customer).setDateofbirth(sc.nextInt());
-        System.out.println("nhập vào giới tính");
-        ((Customer)customer).setGender(sc.nextLine());
-        System.out.println("nhập vào số CMNN");
-        ((Customer)customer).setCMND(sc.nextLine());
-        System.out.println("nhập vào số điện thoại");
-        ((Customer)customer).setTelephonenumber(sc.nextLine());
-        System.out.println("nhập vào đia chỉ email");
-        ((Customer)customer).setEmail(sc.nextLine());
-        System.out.println("nhập vào loại khách");
-        ((Customer)customer).setGuesttype(sc.nextLine());
-        customer.showInfor();
+    private static void AddNewBookingResort(){
+        ArrayList<Customer> listCustomer = FuncWriteFileCSV.getCustomerFromCSV();
+//        listCustomer.sort(new  );
 
 
 
 
     }
-    private static void ShowInformationCustomer(){}
+    private static void AddNewCustomer(){
+        String context = " ";
+        String errMes = " ";
+        Services customer = new Customer();
+        customer.setId(UUID.randomUUID().toString().replace("--","---"));
+        ((Customer)customer).setNameCustomer(sc.nextLine());
+        while (!FuncValidation.checkNameCustomer(((Customer) customer).getNameCustomer())){
+            System.out.println("Name customer is valid.Please try again!");
+            System.out.println("nhập tên khách hàng");
+            ((Customer) customer).setNameCustomer(sc.nextLine());
+        }
+//        System.out.println("nhập vào ngày sinh ");
+//        ((Customer)customer).setDateofbirth(sc.nextInt());
+//        sc.nextLine();
+        context="nhập vào ngày sinh của bạn";
+        errMes="ngày sinh bạn nhập phải đúng định dạng,ngày sinh phải là kiểu int";
+        ((Customer) customer).setDateofbirth(FuncValidation.checkBirthday(context,errMes));
+        while (((Customer) customer).getDateofbirth()<=0){
+            System.out.println(errMes);
+            ((Customer) customer).setDateofbirth(FuncValidation.checkBirthday(context,errMes));
+        }
+        System.out.println("nhập vào giới tính");
+        ((Customer)customer).setGender(sc.nextLine());
+        while (!FuncValidation.checkGender(((Customer) customer).getGender())){
+            System.out.println(" Gender is valid.Please try again!");
+            System.out.println("nhập vào giới tính");
+            ((Customer) customer).setGender(sc.nextLine());
+        }
+        System.out.println("nhập vào số CMNN");
+        ((Customer)customer).setCMND(sc.nextLine());
+        while (!FuncValidation.checkIdCard(((Customer) customer).getId())){
+            System.out.println(" Gender is valid.Please try again!");
+            System.out.println("nhập vào giới tính");
+            ((Customer) customer).setId(sc.nextLine());
+        }
+        System.out.println("nhập vào số điện thoại");
+        ((Customer)customer).setTelephonenumber(sc.nextLine());
+
+        System.out.println("nhập vào đia chỉ email");
+        ((Customer)customer).setEmail(sc.nextLine());
+        while (!FuncValidation.checkEmailCustomer(((Customer) customer).getEmail())){
+            System.out.println(" Email is valid.Please try again!");
+            System.out.println("nhập vào định dạng email của người dùng");
+            ((Customer) customer).setEmail(sc.nextLine());
+        }
+        System.out.println("nhập vào loại khách");
+        ((Customer)customer).setGuesttype(sc.nextLine());
+        System.out.println(customer.showInfor());
+        ArrayList<Customer> listCustomer = new ArrayList<Customer>();
+        listCustomer.add((Customer)customer);
+        FuncWriteFileCSV.writeCustomerToFileCSV(listCustomer);
+        System.out.println("\n Add Customer: "+((Customer) customer).getNameCustomer()+"Successfully!!!");
+        sc.nextLine();
+        backMainMenu();
+    }
+    private static void ShowInformationCustomer(){
+        ArrayList<Customer> listCustomer = FuncWriteFileCSV.getCustomerFromCSV();
+        for (Customer customer:listCustomer){
+            System.out.println("________________________");
+            System.out.println(customer.showInfor());
+            System.out.println("________________________");
+        }
+    }
     private static void backMainMenu(){
         System.out.println("\n enter to continue");
         System.out.println("\n------------------");
@@ -147,61 +208,42 @@ public class MainController {
     private static Services addnewServices(Services service){
         String content = "";
         String errMes = "";
-        System.out.println("nhập vào id");service.setId(UUID.randomUUID().toString().replace("--","---"));
-        sc.nextLine();
-        System.out.println("nhập tên dich vụ");
+        service.setId(UUID.randomUUID().toString().replace("-","-"));
+        System.out.println("nhập vào tên dịch vụ");
         service.setNameServices(sc.nextLine());
-        while (FuncValidation.checkNameServices(service.getNameServices()));
-        System.out.println("Name Servies is invalidate.please try again!!! ");
-        System.out.println("Enter Name Services:");
-        service.setNameServices(sc.nextLine());
-
-        content = " Enter Area Used";
-        errMes = "Area Used is Invali(Area >30,Area must be a float),please try again";
+        while (FuncValidation.checkNameServices(service.getNameServices())){
+            System.out.println("Name services is valid.Please try again!");
+            System.out.println("nhập tên dich vụ");
+            service.setNameServices(sc.nextLine());
+        }
+        content="nhập vào diện tích sử dụng";
+        errMes="diện tích bạn cần nhập phải > 30,diện tích phải là kiểu float";
         service.setAreaused(FuncValidation.checkValiNumberFloat(content,errMes));
         while (service.getAreaused()<=30){
             System.out.println(errMes);
             service.setAreaused(FuncValidation.checkValiNumberFloat(content,errMes));
         }
-        System.out.println("diện tích sử dụng");
-        service.setAreaused(sc.nextFloat());
-        sc.nextLine();
-        content = " Enter Area Used";
-        errMes = "Area Used is Invali(Area >30,Area must be a float),please try again";
+        content="nhập vào chi phí thuê";
+        errMes="chi phí thuê của bạn phải >0,diện tích phải là kiểu float";
         service.setAreaused(FuncValidation.checkValiNumberFloat(content,errMes));
-        while (service.getAreaused()>=0){
+        while (service.getAreaused()<=0){
             System.out.println(errMes);
             service.setAreaused(FuncValidation.checkValiNumberFloat(content,errMes));
         }
-        System.out.println("nhập chi phí thuê");
-        service.setRentalcosts(sc.nextFloat());
-        sc.nextLine();
-        content = " Enter Area Used";
-        errMes = "Area Used is Invali(Area >30,Area must be a float),please try again";
-        service.setAreaused(FuncValidation.checkValiNumberInteger(content,errMes));
-        while (service.getAreaused()>0||service.getAreaused()<20){
+        content="nhập vào số người thuê";
+        errMes="chi phí thuê của bạn phải >0||<20,chi phí thuê là kiểu integer";
+        service.setRentalcosts(FuncValidation.checkValiNumberInteger(content,errMes));
+        while (service.getRentalcosts()<=0||service.getRentalcosts()>20){
             System.out.println(errMes);
-            service.setAreaused(FuncValidation.checkValiNumberFloat(content,errMes));
-
-        System.out.println("nhập tên dich vụ");
-        service.setNameServices(sc.nextLine());
-        while (FuncValidation.checkNameServices(service.getNameServices()));
-        System.out.println("Name Servies is invalidate.please try again!!! ");
-        System.out.println("Enter Name Services:");
-        service.setNameServices(sc.nextLine());
-
-
+            service.setAreaused(FuncValidation.checkValiNumberInteger(content,errMes));
         }
-//        System.out.println("nhập số người thuê");
-//        service.setAmountofpeople(sc.nextInt());
-
         System.out.println("nhập vào kiểu thuê");
         service.setTypeofrent(sc.nextLine());
-        while (FuncValidation.checkNameServices(service.getNameServices()));
-        System.out.println("Name Servies is invalidate.please try again!!! ");
-        System.out.println("Enter Name Services:");
-        service.setNameServices(sc.nextLine());
-        sc.nextLine();
+        while (!FuncValidation.checkNameServices(service.getNameServices())){
+            System.out.println("Name services is valid.Please try again!");
+            System.out.println("nhập vào kiểu thuê của bạn");
+            service.setNameServices(sc.nextLine());
+        }
         return service;
     }
     private static void addnewVilla(){
@@ -226,9 +268,6 @@ public class MainController {
         System.out.println("\n Add villa: "+villa.getNameServices()+"Successfully!!!");
         sc.nextLine();
         backMainMenu();
-
-
-
     }
     private static void addnewHouse(){
         Services house = new House();

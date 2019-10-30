@@ -9,6 +9,8 @@ public class Customer extends Services {
     private String address;
     private String Email;
     private String guesttype;
+    private Services services;
+
 
     public Customer() {
     }
@@ -91,7 +93,6 @@ public class Customer extends Services {
     public void setEmail(String email) {
         Email = email;
     }
-
     public String getGuesttype() {
         return guesttype;
     }
@@ -100,15 +101,22 @@ public class Customer extends Services {
         this.guesttype = guesttype;
     }
 
+    public Services getServices() {
+        return services;
+    }
+
+    public void setServices(Services services) {
+        this.services = services;
+    }
+
     @Override
     public String showInfor() {
-//        return "\nNameServices: "+super.getNameServices()+
-//                " \n Areaused: " +super.getAreaused()+
-//                " \n rentalcosts: "+super.getRentalcosts()+
-//                " \namountofpeople: "+super.getAmountofpeople()+
-//                " \ntypeofrent: "+super.getTypeofrent()+
-//                " \nid: "+super.getId()+
-        return
+        return "\nNameServices: "+super.getNameServices()+
+                " \n Areaused: " +super.getAreaused()+
+                " \n rentalcosts: "+super.getRentalcosts()+
+                " \namountofpeople: "+super.getAmountofpeople()+
+                " \ntypeofrent: "+super.getTypeofrent()+
+                " \nid: "+super.getId()+
                 "\n NameCustomer"+this.getNameCustomer()+
                 "\n Dateofbirth"+this.getDateofbirth()+
                 "\n gender"+this.getGender()+

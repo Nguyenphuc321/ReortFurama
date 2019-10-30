@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="commons-collections4-4.1">
+    <CLASSES>
+      <root url="jar://E:/LibsFileCSV/commons-collections4-4.1.jar!/" />
+      <root url="jar://E:/LibsFileCSV/commons-lang3-3.9.jar!/" />
+      <root url="jar://E:/LibsFileCSV/opencsv-4.6.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
