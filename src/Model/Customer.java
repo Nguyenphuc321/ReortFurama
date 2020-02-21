@@ -1,8 +1,9 @@
 package Model;
 
-public class Customer extends Services {
+
+public class Customer extends Services{
     private String NameCustomer;
-    private int Dateofbirth;
+    private String Dateofbirth;
     private String gender;
     private String CMND;
     private String telephonenumber;
@@ -11,11 +12,10 @@ public class Customer extends Services {
     private String guesttype;
     private Services services;
 
-
     public Customer() {
     }
 
-    public Customer(String nameCustomer, int dateofbirth, String gender, String CMND, String telephonenumber, String address, String email, String guesttype) {
+    public Customer(String nameCustomer, String dateofbirth, String gender, String CMND, String telephonenumber, String address, String email, String guesttype, Services services) {
         NameCustomer = nameCustomer;
         Dateofbirth = dateofbirth;
         this.gender = gender;
@@ -24,9 +24,10 @@ public class Customer extends Services {
         this.address = address;
         Email = email;
         this.guesttype = guesttype;
+        this.services = services;
     }
 
-    public Customer(String nameServices, float areaused, float rentalcosts, int amountofpeople, String typeofrent, String id, String nameCustomer, int dateofbirth, String gender, String CMND, String telephonenumber, String address, String email, String guesttype) {
+    public Customer(String nameServices, float areaused, float rentalcosts, int amountofpeople, String typeofrent, String id, String nameCustomer, String dateofbirth, String gender, String CMND, String telephonenumber, String address, String email, String guesttype, Services services) {
         super(nameServices, areaused, rentalcosts, amountofpeople, typeofrent, id);
         NameCustomer = nameCustomer;
         Dateofbirth = dateofbirth;
@@ -36,6 +37,7 @@ public class Customer extends Services {
         this.address = address;
         Email = email;
         this.guesttype = guesttype;
+        this.services = services;
     }
 
     public String getNameCustomer() {
@@ -46,11 +48,11 @@ public class Customer extends Services {
         NameCustomer = nameCustomer;
     }
 
-    public int getDateofbirth() {
+    public String getDateofbirth() {
         return Dateofbirth;
     }
 
-    public void setDateofbirth(int dateofbirth) {
+    public void setDateofbirth(String dateofbirth) {
         Dateofbirth = dateofbirth;
     }
 
@@ -93,6 +95,7 @@ public class Customer extends Services {
     public void setEmail(String email) {
         Email = email;
     }
+
     public String getGuesttype() {
         return guesttype;
     }

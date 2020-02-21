@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 public class FuncWriteFileCSV {
     private static final char DEFAULT_SEPARATOR = ',';
@@ -34,7 +35,7 @@ public class FuncWriteFileCSV {
     private static String[] headerRecorCustomer = new String[]{"NameCustomer","Dateofbirth","gender","CMND","telephonenumber","addreess","Email","guesttype"};
     private static final int NUM_OF_LINE_SKIP = 1;
 
-    private static void writeBookingToFileCSV(ArrayList<Customer>arrayList){
+    public static void writeBookingToFileCSV(ArrayList<Customer>arrayList){
         try (Writer writer = new FileWriter(pathBooking);
              CSVWriter csvWriter = new CSVWriter(writer, CSVWriter.DEFAULT_SEPARATOR
                      , CSVWriter.NO_QUOTE_CHARACTER
@@ -83,10 +84,8 @@ public class FuncWriteFileCSV {
             }
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
-
         }
     }
-
     public static void writeHoseToFileCSV(ArrayList<House> arrayList) {
         try (Writer writer = new FileWriter(pathHouse);
              CSVWriter csvWriter = new CSVWriter(writer, CSVWriter.DEFAULT_SEPARATOR
@@ -181,7 +180,7 @@ public class FuncWriteFileCSV {
         return (ArrayList<Customer>) csvToBean.parse();
     }
         public static ArrayList<Villa> getVillaFromCSV() {
-        Path path = Paths.get(pathVilla);
+            Path path = Paths.get(pathVilla);
         if (!Files.exists(path)) {
             try {
                 Writer writer = new FileWriter(pathVilla);
@@ -292,7 +291,7 @@ public class FuncWriteFileCSV {
 //        }
 //        return (ArrayList<Customer>) csvToBean.parse();
 //    }
-
+//
     public static ArrayList<Customer> getBookingFromCSV() {
         Path path = Paths.get(pathBooking);
         if (!Files.exists(path)) {
@@ -320,5 +319,31 @@ public class FuncWriteFileCSV {
             System.out.println(ex.getMessage());
         }
         return (ArrayList<Customer>) csvToBean.parse();
+    }
+    public static TreeSet<String> getAllNameServiceFromCSV(String path){
+        BufferedReader br=null;
+        TreeSet<String> result=new TreeSet<>();
+        try {
+            String line;
+            br=new BufferedReader(new FileReader(path));
+            while (br.readLine()!=null){
+                line=br.readLine();
+                if(getNameServicesFromFile(line).equals("serviceName")){
+                    continue;
+                }
+                result.add(getNameServicesFromFile(line));
+            }
+        }catch (IOException ex){
+            System.out.println(ex.getMessage());
+        }
+        return result;
+    }
+    public static String getNameServicesFromFile(String csvLine) {
+        String name = "";
+        if (csvLine != null) {
+            String[] splitData = csvLine.split(",");
+            name = splitData[0];
+        }
+        return name;
     }
 }

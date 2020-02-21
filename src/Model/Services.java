@@ -3,7 +3,7 @@ package Model;
 public abstract class Services {
     private String NameServices;
     private float Areaused;
-    private float  rentalcosts;
+    private float rentalcosts;
     private int amountofpeople;
     private String typeofrent;
     private String id;
